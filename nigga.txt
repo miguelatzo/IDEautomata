@@ -1,0 +1,3 @@
+Inicio
+Avanza(1);
+Fin
