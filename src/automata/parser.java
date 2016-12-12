@@ -177,8 +177,7 @@ class CUP$parser$actions{
 		Integer e = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		/*System.out.println("Avanza "+ e); */
                 for (int i = 0; i < e; i++) {
-                    moves av = new moves("avanza");
-                    aut.moves.add(av);
+                    aut.moves.add("avanza");
                 }
               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
@@ -189,8 +188,7 @@ class CUP$parser$actions{
             {
               Object RESULT = null;
 		/* System.out.println("Activa LED");*/
-                moves av = new moves("activa");
-                aut.moves.add(av);
+                aut.moves.add("activa");
               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;
@@ -200,8 +198,7 @@ class CUP$parser$actions{
             {
               Object RESULT = null;
 		 /*System.out.println("Giro a la izquierda");*/
-                 moves av = new moves("girarizquierda");
-                 aut.moves.add(av);
+                 aut.moves.add("girarizquierda");
               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;
@@ -211,8 +208,7 @@ class CUP$parser$actions{
             {
               Object RESULT = null;
 		 /*System.out.println("Giro a la derecha");*/
-                 moves av = new moves("girarderecha");
-                 aut.moves.add(av);
+                 aut.moves.add("girarderecha");
                CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;

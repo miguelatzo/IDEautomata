@@ -8,11 +8,6 @@ package automata;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.Timer;
 
 /**
@@ -24,161 +19,39 @@ public class aut extends javax.swing.JFrame implements ActionListener{
     /**
      * Creates new form aut
      */
+    private final int delay = 1000;//tiempo de espera entre acciones/movimientos
+    manejoArchivos manejador;//manejador es una instancia de la clase manejoArchivos para manipular Jfilechooser
+    parserController parser;//el controlador de instancia de la clase parser
+    someT controller;//el controlador de la clase someT, que controla a la imagen del robot
+    static aut conexion;//ventana estatica que permite el uso del array moves en la clase parser$actions
+    private int contadorAcciones = 0;//mantiene activo al array de movimientos cuando tiene movimientos
+    private String tempString;//almacena temporalmente el valor  de moves[contadorAcciones]
+    Timer timer;//organiza las acciones dentro del AWTeventqueue
+    static ArrayList<String> moves;//array con las acciones en String que llaman a los métodos
     
-    private final int delay = 1000;
-    private final int stepSize = 20;
-    //manejador es una instancia de la clase manejoArchivos para manipular Jfilechooser
-    manejoArchivos manejador;
-    //el controlador de instancia de la clase parser
-    parserController parser;
-    someT controller;
-    static aut conexion;
-    
-    Timer timer;
-    static ArrayList<moves> moves;
-    private boolean up, down, left, right;
-    
-    private int X, Y, xI, yI;
     public aut() {
-        
+        //INICIALIZAR VARIABLES
         moves = new ArrayList<>();
-        
-        this.controller = new someT();
         this.manejador = new manejoArchivos();
-        this.parser = new parserController();
-        
-        this.up = true;
-        this.down = false;
-        this.right = false;
-        this.left = false;
-        
+        this.parser = new parserController();        
         initComponents();
         
-        this.setLayout(null);
+        this.controller = new someT(jLabel1); //jLabel1 es el argumento que almacenará la imagen y será el objeto en movimiento      
+        conexion = aut.this; //copia exacta de este JFrame
         
-        this.X = jLabel1.getX();
-        this.Y = jLabel1.getY();
-        this.xI = this.X;
-        this.yI = this.Y;
-        
-        jLabel1.setIcon(controller.getRobo());
-        
-        conexion = aut.this;
-        
-        timer = new Timer(delay, this);
+        timer = new Timer(delay, this);//establece la demora por acción y el ActionListener(este JFrame)
     }
+    //se accede a través de conexion para recolectar los errores de compilación y mostrarlos en jTextArea2
     public void imprimirErrores(String t){
         jTextArea2.setText(jTextArea2.getText()+ "\n"+ t);
     }
-    
+    //limpia el array de acciones, el jTextArea2 para nueva compilación, y llama a redo del controller, que reestablece la imagen principal
     public void redo(){
         moves.clear();
-        
         jTextArea2.setText("");
-        
-        this.X = xI;
-        this.Y = yI;
-        
-        jLabel1.setBounds(X, Y, controller.getRobo().getIconWidth(), controller.getRobo().getIconHeight());
-        jLabel1.setIcon(controller.getRobo());
-        
-        this.up = true;
-        this.down = false;
-        this.left = false;
-        this.right = false;
-    }
-    public void activar(){
-            
-            System.out.printf("X: %d Y: %d\n", this.X, this.Y);
-            if(up){
-                jLabel1.setIcon(controller.getRoboLED());
-                jLabel1.setBounds(X, Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());jLabel1.setIcon(controller.getRobo());
-            }else if(down){
-                jLabel1.setIcon(controller.getRoboLEDd());
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());
-            }else if(left){
-                jLabel1.setIcon(controller.getRoboLEDl());
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());
-            }else if(right){
-                jLabel1.setIcon(controller.getRoboLEDr());
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());
-            }
-            System.out.printf("X: %d Y: %d\n", this.X, this.Y);
-    }
-    public void mover(){
-            
-            System.out.printf("X: %d Y: %d\n", this.X, this.Y);
-            if(this.up){
-                this.Y -= (stepSize);
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());
-            }else if(this.down){
-                this.Y += (stepSize);
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());
-            }else if(this.left){
-                this.X -= (stepSize);
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconHeight());
-            }else if(this.right){
-                this.X += (stepSize);
-                jLabel1.setBounds(this.X, this.Y, jLabel1.getIcon().getIconWidth(), jLabel1.getIcon().getIconWidth());
-            }
-            System.out.printf("X: %d Y: %d\n", this.X, this.Y);
+        controller.redo();
     }
     
-    public void girarDerecha(){
-        if(this.up){
-            jLabel1.setIcon(controller.getRobor());
-            this.up = false;
-            this.down = false;
-            this.left = false;
-            this.right = true;
-        }else if(this.down){
-            jLabel1.setIcon(controller.getRobol());
-            this.down = false;
-            this.right= false;
-            this.up = false;
-            this.left = true;
-        }else if(this.right){
-            jLabel1.setIcon(controller.getRobod());
-            this.right = false;
-            this.left = false;
-            this.up = false;
-            this.down = true;
-        }else if(this.left){
-            jLabel1.setIcon(controller.getRobo());
-            this.left = false;
-            this.right = false;
-            this.down = false;
-            this.up = true;
-        }
-        System.out.printf("X: %d Y: %d\n", this.X, this.Y);
-    }
-    public void girarIzquierda(){
-        if(this.up){
-            jLabel1.setIcon(controller.getRobol());
-            this.up = false;
-            this.down = false; 
-            this.right = false;
-            this.left = true;
-        }else if(this.down){
-            jLabel1.setIcon(controller.getRobor());
-            down = false; 
-            this.up = false; 
-            this.left = false;
-            this.right = true;
-        }else if(this.right){
-            jLabel1.setIcon(controller.getRobo());
-            this.right = false; 
-            this.left = false; 
-            this.down = false;
-            this.up = true;
-        }else if(this.left){
-            jLabel1.setIcon(controller.getRobod());
-            this.down = true;
-            this.left = false; 
-            this.right = false; 
-            this.up = false;
-        }
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -311,20 +184,23 @@ public class aut extends javax.swing.JFrame implements ActionListener{
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        //abrirArchivo muestra el archivo cargado en Area1 e imprime una notificación en Area2
         manejador.abrirArchivo(jTextArea1, jTextArea2);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        //guardarArchivo toma el contenido de Area11 y lo guarda en un archivo
         manejador.guardarArchivo(jTextArea1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        redo();
-        parser.writeDoc(jTextArea1.getText());
-        parser.initParser();
-        jTextArea2.setText(jTextArea2.getText() + "\n****Ha finalizado el analisis****");
+        redo();//limpia
+        parser.writeDoc(jTextArea1.getText());//escribe el contenido de Area1 en un archivo temporal(más reciente)
+        parser.initParser();//inicia el parseo y escaneo del código ingresado
+        jTextArea2.setText(jTextArea2.getText() + "\n****Ha finalizado el analisis****");//errores + final de parseo
+        //esta condición da TRUE en caso de no haber errores de compilación y activa el botón ejecutar
         if("\n****Ha finalizado el analisis****".equals(jTextArea2.getText())){
             jButton4.setEnabled(true);
         }
@@ -332,6 +208,7 @@ public class aut extends javax.swing.JFrame implements ActionListener{
 
   
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //el mismo botón se desactiva tras usarse e inicia las acciones con timer.start()
         jButton4.setEnabled(false);
         timer.start();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -381,31 +258,31 @@ public class aut extends javax.swing.JFrame implements ActionListener{
     public javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
 
-    int posicion = 0;
     @Override
     public void actionPerformed(ActionEvent ae) {
-        timer.start();
-        if (moves.size()-1 < posicion) {
-            timer.stop();
-            moves.clear();
-            posicion = 0;
+        //asegura que se deseche el timer en caso de que el array no contenga acciones
+        //o que se detenga una vez se hayan acabado 
+        if (moves.size()-1 < contadorAcciones) {
+            timer.stop();//detiene el timer
+            moves.clear();//reinicia el array
+            contadorAcciones = 0;//devuelve el contador que recorre el array a 0
         }else{
-            moves tempMove = moves.get(posicion);
-            switch (tempMove.getNombre()) {
+            tempString = moves.get(contadorAcciones);//captura el valor del array en la posición contadorAcciones
+            switch (tempString) {
                 case "activa":
-                    activar();
+                    jLabel1 = controller.activar(); //Jlabel1 se modifica y se devuelve
                     break;
                 case "avanza":
-                    mover();
+                    jLabel1 = controller.mover();//Jlabel1 se modifica y se devuelve
                     break;
                 case "girarderecha":
-                    girarDerecha();
+                    jLabel1 = controller.girarDerecha();//Jlabel1 se modifica y se devuelve
                     break;
                 case "girarizquierda":
-                    girarIzquierda();
+                    jLabel1 = controller.girarIzquierda();//Jlabel1 se modifica y se devuelve
                     break;
             }
-            posicion++;
+            contadorAcciones++;
         }
     }
 

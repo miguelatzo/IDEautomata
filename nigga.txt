@@ -1,6 +1,9 @@
 Inicio
+Avanza(4);
+Activa;
+GIzquierda;
+Avanza(2);
 GDerecha;
-Avanza(5);
+Activa;
 GDerecha;
-Avanza(1);
 Fin
