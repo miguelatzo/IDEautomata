@@ -7,7 +7,11 @@
 package automata;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java_cup.runtime.*;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /** CUP v0.10k generated parser.
   * @version Sun Dec 04 13:29:15 CST 2016
@@ -102,39 +106,37 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
 	public static void main ( String args[] ) throws Exception {
-		new parser(new Scanner(new FileReader(args[0]))).parse(); 
+		new parser(new Scanner(new FileReader(args[0]))).parse();
 	}
 	public void syntax_error(Symbol s){
 		if(s.left == -1)
-                    aut.imprimirErrores("\nerror fatal en estructura de Inicio - Fin");
+                    aut.conexion.imprimirErrores("\nerror fatal en estructura de Inicio - Fin");
 		else
-			aut.imprimirErrores("\nerror en la linea: " + (s.left + 1));
+			aut.conexion.imprimirErrores("\nerror en la linea: " + (s.left + 1));
 	}
 
 	public void report_fatal_error(String message, Object info){
 		//report_error("ID de error: " +info.toString(),null);
-		if("#0".equals(info.toString())){aut.imprimirErrores("(0)error lexico en el token de apertura o cierre");}
-		if("#1".equals(info.toString())){aut.imprimirErrores("ERROR");}
-		if("#2".equals(info.toString())){aut.imprimirErrores("(0)palabra reservada incompleta\n(1)punto y coma innecesario\n(2)estructura de programa sin instrucciones validas");}
-		if("#3".equals(info.toString())){aut.imprimirErrores("(0) token Inicio faltante");}
-		if("#4".equals(info.toString())){aut.imprimirErrores("error lexico en palabra reservada,\n(0)verifique mayusculas,\n(1)tokens incompletos\n(2)punto y coma faltante");}
-		if("#5".equals(info.toString())){aut.imprimirErrores("(0)punto y coma faltante\n(1)palabra reservada incompleta\n");}
-		if("#6".equals(info.toString())){aut.imprimirErrores("(0)punto y coma faltante");}
-		if("#7".equals(info.toString())){aut.imprimirErrores("(0)error en la funcion Activa");}
-		if("#8".equals(info.toString())){aut.imprimirErrores("(0)punto y coma faltante\n(1)estructura de programa sin instrucciones validas");}
-		if("#9".equals(info.toString())){aut.imprimirErrores("(0)no se pudo localizar la funcion");}
-		if("#10".equals(info.toString())){aut.imprimirErrores("(0)argumento invalido en la funcion");}
-		if("#11".equals(info.toString())){aut.imprimirErrores("(0)caracter invalido");}
+		if("#0".equals(info.toString())){aut.conexion.imprimirErrores("(0)error lexico en el token de apertura o cierre");}
+		if("#1".equals(info.toString())){aut.conexion.imprimirErrores("ERROR");}
+		if("#2".equals(info.toString())){aut.conexion.imprimirErrores("(0)palabra reservada incompleta o mal escrita\n(1)punto y coma innecesario\n(2)estructura de programa sin instrucciones validas");}
+		if("#3".equals(info.toString())){aut.conexion.imprimirErrores("(0) token Inicio faltante");}
+		if("#4".equals(info.toString())){aut.conexion.imprimirErrores("error lexico en palabra reservada,\n(0)verifique mayusculas,\n(1)tokens incompletos\n(2)punto y coma faltante");}
+		if("#5".equals(info.toString())){aut.conexion.imprimirErrores("(0)punto y coma faltante\n(1)palabra reservada incompleta\n");}
+		if("#6".equals(info.toString())){aut.conexion.imprimirErrores("(0)punto y coma faltante");}
+		if("#7".equals(info.toString())){aut.conexion.imprimirErrores("(0)error en la funcion Activa");}
+		if("#8".equals(info.toString())){aut.conexion.imprimirErrores("(0)punto y coma faltante\n(1)estructura de programa sin instrucciones validas");}
+		if("#9".equals(info.toString())){aut.conexion.imprimirErrores("(0)no se pudo localizar la funcion");}
+		if("#10".equals(info.toString())){aut.conexion.imprimirErrores("(0)argumento invalido en la funcion");}
+		if("#11".equals(info.toString())){aut.conexion.imprimirErrores("(0)caracter invalido");}
 	}
 
 }
 
 /** Cup generated class to encapsulate user supplied action code.*/
-class CUP$parser$actions {
+class CUP$parser$actions{
 
- 
   private final parser parser;
-
   /** Constructor */
   CUP$parser$actions(parser parser) {
     this.parser = parser;
@@ -174,8 +176,10 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		Integer e = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		/*System.out.println("Avanza "+ e); */
-                someT.moveD(aut.jLabel1);
-                aut.delay();
+                for (int i = 0; i < e; i++) {
+                    moves av = new moves("avanza");
+                    aut.moves.add(av);
+                }
               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;
@@ -185,7 +189,8 @@ class CUP$parser$actions {
             {
               Object RESULT = null;
 		/* System.out.println("Activa LED");*/
-                aut.jLabel1.setIcon(aut.st.getIconTwo());
+                moves av = new moves("activa");
+                aut.moves.add(av);
               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;
@@ -194,7 +199,9 @@ class CUP$parser$actions {
           case 5: // expresion ::= GIZQUIERDA SEMI 
             {
               Object RESULT = null;
-		 /*System.out.println("Giro a la izquierda");*/ 
+		 /*System.out.println("Giro a la izquierda");*/
+                 moves av = new moves("girarizquierda");
+                 aut.moves.add(av);
               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;
@@ -203,8 +210,10 @@ class CUP$parser$actions {
           case 4: // expresion ::= GDERECHA SEMI 
             {
               Object RESULT = null;
-		 /*System.out.println("Giro a la derecha");*/ 
-              CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
+		 /*System.out.println("Giro a la derecha");*/
+                 moves av = new moves("girarderecha");
+                 aut.moves.add(av);
+               CUP$parser$result = new java_cup.runtime.Symbol(4/*expresion*/, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-0)).right, RESULT);
             }
           return CUP$parser$result;
 

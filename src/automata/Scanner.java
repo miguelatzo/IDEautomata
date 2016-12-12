@@ -597,7 +597,7 @@ public class Scanner implements java_cup.runtime.Scanner {
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 1: 
           { /* Error */
-aut.imprimirErrores("Caracter no identificado : < " + yytext()+ " >");
+              aut.conexion.imprimirErrores("Caracter no identificado : < " + yytext()+ " >");
           }
         case 13: break;
         case 7: 

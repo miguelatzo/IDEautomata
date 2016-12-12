@@ -5,8 +5,8 @@
         <group>
             <file>file:/home/mike/NetBeansProjects/automata/src/automata/parser.java</file>
             <file>file:/home/mike/NetBeansProjects/automata/src/automata/aut.java</file>
-            <file>file:/home/mike/NetBeansProjects/automata/src/automata/parserController.java</file>
             <file>file:/home/mike/NetBeansProjects/automata/src/automata/someT.java</file>
+            <file>file:/home/mike/NetBeansProjects/automata/src/automata/moves.java</file>
         </group>
     </open-files>
 </project-private>

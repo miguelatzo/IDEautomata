@@ -1,3 +1,6 @@
 Inicio
+GDerecha;
+Avanza(5);
+GDerecha;
 Avanza(1);
 Fin
